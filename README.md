@@ -2,6 +2,12 @@
 
 A full-stack real-time translation bridge between doctors and patients, built to break language barriers in healthcare settings.
 
+## 🌐 Live Demo
+
+**Deployed Application:** [https://doctor-patient-translation.onrender.com](https://doctor-patient-translation.onrender.com)
+
+> **Note:** The application is hosted on Render's free tier. If the app hasn't been accessed recently, it may take ~30 seconds to wake up on first load.
+
 ## 🎯 Project Overview
 
 This application provides real-time bidirectional translation for medical conversations, with features including text chat, audio recording, conversation logging, search capabilities, and AI-powered clinical summaries.
