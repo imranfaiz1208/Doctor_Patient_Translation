@@ -1,0 +1,14 @@
+# Render.com Blueprint Configuration
+# This file configures auto-deployment from GitHub
+
+services:
+  - type: web
+    name: doctor-patient-translation
+    runtime: node
+    buildCommand: npm install && npm run build && cd local-server && npm install
+    startCommand: cd local-server && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: OPENAI_API_KEY
+        sync: false  # You'll set this manually in Render dashboard

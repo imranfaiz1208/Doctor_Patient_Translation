@@ -7,22 +7,29 @@ const OpenAI = require('openai');
 const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
 
-require('dotenv').config({ path: path.join(__dirname, '../.env') });
+require('dotenv').config({ path: path.join(__dirname, '.env') });
+
+// Also try loading from parent .env if local .env doesn't have the key
+if (!process.env.OPENAI_API_KEY) {
+  require('dotenv').config({ path: path.join(__dirname, '../.env') });
+}
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors({
   origin: function (origin, callback) {
     // Allow requests with no origin (like mobile apps or curl)
-    // or any localhost origin for development
-    if (!origin || origin.includes('localhost') || origin.includes('127.0.0.1')) {
+    // In production, allow all origins since frontend is served from same server
+    if (!origin || process.env.NODE_ENV === 'production') {
+      callback(null, true);
+    } else if (origin.includes('localhost') || origin.includes('127.0.0.1')) {
       callback(null, true);
     } else if (process.env.ALLOWED_ORIGINS?.split(',').includes(origin)) {
       callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'));
+      callback(null, true); // Allow all for now
     }
   },
   methods: ['GET', 'POST'],
@@ -404,6 +411,21 @@ function highlightText(text, query) {
   return escaped.replace(regex, '<mark>$1</mark>');
 }
 
+// Serve static frontend files in production
+const distPath = path.join(__dirname, '../dist');
+if (fs.existsSync(distPath)) {
+  app.use(express.static(distPath));
+
+  // Handle client-side routing - serve index.html for all non-API routes
+  app.get('*', (req, res, next) => {
+    // Don't intercept API routes or uploads
+    if (req.path.startsWith('/make-server-b5f5c952') || req.path.startsWith('/uploads')) {
+      return next();
+    }
+    res.sendFile(path.join(distPath, 'index.html'));
+  });
+}
+
 app.listen(port, () => {
-  console.log(`Local server listening on port ${port}`);
+  console.log(`Server listening on port ${port}`);
 });

@@ -6,7 +6,9 @@
   "scripts": {
     "build": "vite build",
     "dev": "vite",
-    "dev:all": "start npm run start --prefix local-server && vite"
+    "dev:all": "start npm run start --prefix local-server && vite",
+    "render-build": "npm install && npm run build && cd local-server && npm install",
+    "start": "cd local-server && npm start"
   },
   "dependencies": {
     "@emotion/react": "11.14.0",
