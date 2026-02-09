@@ -23,15 +23,15 @@ This application provides real-time bidirectional translation for medical conver
 
 3. **Audio Recording & Storage**
    - Browser-based audio recording using MediaRecorder API
-   - Audio clips stored in Supabase Storage
+   - Audio clips stored locally on server
    - Playback functionality within conversation thread
    - Visual recording indicators with timer
 
 4. **Conversation Logging**
-   - Full persistence using Supabase backend
+   - Full persistence using local JSON database
    - Text and audio messages with timestamps
    - Cross-session persistence
-   - Conversation history accessible from any device
+   - Conversation history accessible locally
 
 5. **Conversation Search**
    - Full-text search across all conversations
@@ -193,7 +193,7 @@ This application provides real-time bidirectional translation for medical conver
 | `OPENAI_API_KEY` | Your OpenAI API key for translation and summarization | ✅ Yes |
 
 ### Production Deployment
-This application can also be deployed on cloud platforms with Supabase integration.
+This application can be deployed on cloud platforms like Railway, Render, or Heroku.
 
 ## 🔑 API Key Configuration
 
