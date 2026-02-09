@@ -55,12 +55,9 @@ This application provides real-time bidirectional translation for medical conver
 - **date-fns** - Date formatting
 
 ### Backend
-- **Supabase** - Backend infrastructure
-  - Edge Functions (Hono web server)
-  - Key-Value Store (Postgres)
-  - Storage (Audio files)
-- **Deno** - Edge runtime environment
-- **Hono** - Lightweight web framework
+- **Node.js + Express** - Local API server
+- **LowDB** - JSON file-based database
+- **Local File Storage** - Audio files stored on disk
 
 ### AI/LLM Integration
 - **OpenAI GPT-3.5-turbo** - Real-time translation
@@ -69,7 +66,6 @@ This application provides real-time bidirectional translation for medical conver
 ### Development Tools
 - **Vite** - Build tool and dev server
 - **TypeScript/TSX** - Type safety
-- **Figma Make** - Development environment
 
 ## 🏗️ Architecture
 
@@ -81,10 +77,10 @@ This application provides real-time bidirectional translation for medical conver
 │  - Real-time UI updates                                     │
 └───────────────────────┬─────────────────────────────────────┘
                         │
-                        │ HTTPS + Bearer Auth
+                        │ HTTP (localhost:3000)
                         │
 ┌───────────────────────▼─────────────────────────────────────┐
-│              Supabase Edge Function (Hono)                  │
+│              Local Express Server (Node.js)                 │
 │  - /conversations (POST, GET)                               │
 │  - /messages (POST)                                         │
 │  - /translate (POST)                                        │
@@ -94,9 +90,9 @@ This application provides real-time bidirectional translation for medical conver
             │                         │
             │                         │
 ┌───────────▼───────────┐   ┌────────▼──────────┐
-│   Supabase Storage    │   │  KV Store (Postgres│
-│   - Audio files       │   │  - Conversations   │
-│   - Signed URLs       │   │  - Messages        │
+│   Local File Storage  │   │  LowDB (db.json)  │
+│   - uploads/ folder   │   │  - Conversations  │
+│   - Audio files       │   │  - Messages       │
 └───────────────────────┘   └────────────────────┘
 
                 External API
@@ -118,7 +114,7 @@ This application provides real-time bidirectional translation for medical conver
 │   │   ├── pages/
 │   │   │   ├── Root.tsx            # Layout wrapper
 │   │   │   ├── Home.tsx            # Landing page
-│   │   │   ├── Conversation.tsx   # Main chat interface
+│   │   │   ├── Conversation.tsx    # Main chat interface
 │   │   │   ├── ConversationHistory.tsx  # Search & history
 │   │   │   └── NotFound.tsx        # 404 page
 │   │   └── components/
@@ -127,11 +123,13 @@ This application provides real-time bidirectional translation for medical conver
 │   │       └── AISummary.tsx       # Summary generation
 │   └── styles/
 │       └── theme.css               # Tailwind customization
-├── supabase/
-│   └── functions/
-│       └── server/
-│           ├── index.tsx           # Main server with routes
-│           └── kv_store.tsx        # Database utilities (protected)
+├── local-server/
+│   ├── server.js                   # Express API server
+│   ├── db.json                     # LowDB database file
+│   ├── uploads/                    # Audio file storage
+│   ├── package.json
+│   └── .env.example
+├── .env.example
 └── README.md
 ```
 
@@ -258,20 +256,18 @@ This application can also be deployed on cloud platforms with Supabase integrati
 ## 🧪 AI Tools & Resources Leveraged
 
 ### Development
-- **Figma Make AI:** Application scaffolding, component generation
 - **GitHub Copilot:** Code completion and debugging assistance
 - **OpenAI GPT-4:** Translation and summarization logic
 
 ### APIs Used
 - **OpenAI API:** GPT-3.5-turbo for translation, GPT-4 for summaries
-- **Supabase API:** Database, storage, authentication
 - **MediaRecorder API:** Browser audio recording
 
 ## ⚠️ Known Limitations & Trade-offs
 
 ### Time Constraints (12-hour scope)
 1. **User Authentication:** Currently using simulated auth
-   - Production needs: Full Supabase auth with user sessions
+   - Production needs: Add proper authentication
    - Impact: Multi-user scenarios not fully separated
 
 2. **Real-time Updates:** Polling not implemented
@@ -289,7 +285,7 @@ This application can also be deployed on cloud platforms with Supabase integrati
    - Production needs: Comprehensive error UI and recovery
 
 ### Technical Limitations
-1. **Storage Limits:** Supabase free tier constraints
+1. **Local Storage:** Data stored in JSON file (not suitable for production scale)
 2. **API Rate Limits:** OpenAI rate limiting on free tiers
 3. **Browser Support:** MediaRecorder requires modern browsers
 4. **Audio Format:** WebM only (not all browsers support)
@@ -354,10 +350,9 @@ This is a technical assessment project. All rights reserved.
 
 ## 👤 Author
 
-**Senior Full-Stack Assessment Submission**
-- Built in 12 hours for Healthcare Translation Assignment
-- Full-stack: React + Supabase + OpenAI
-- Deployment: Figma Make Platform
+**Doctor-Patient Translation App**
+- Full-stack: React + Node.js/Express + OpenAI
+- Local development with no cloud dependencies
 
 ---
 
