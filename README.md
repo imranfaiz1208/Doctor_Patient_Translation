@@ -138,28 +138,68 @@ This application provides real-time bidirectional translation for medical conver
 ## 🚀 Setup & Deployment
 
 ### Prerequisites
-- OpenAI API Key (required for translation and summarization)
+- **Node.js** (v18 or higher)
+- **npm** (comes with Node.js)
+- **OpenAI API Key** (required for translation and summarization)
+  - Get your API key from: https://platform.openai.com/api-keys
+
+### Local Development Setup
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/imranfaiz1208/Doctor_Patient_Translation.git
+   cd Doctor_Patient_Translation
+   ```
+
+2. **Set up environment variables**
+   ```bash
+   # Copy the example files
+   cp .env.example .env
+   cp local-server/.env.example local-server/.env
+   ```
+
+3. **Add your OpenAI API key** to both `.env` files:
+   ```bash
+   OPENAI_API_KEY=your_openai_api_key_here
+   ```
+
+4. **Install dependencies**
+   ```bash
+   # Install frontend dependencies
+   npm install
+   
+   # Install server dependencies
+   cd local-server
+   npm install
+   cd ..
+   ```
+
+5. **Start the development servers**
+   ```bash
+   # Terminal 1: Start the local server
+   cd local-server
+   npm start
+   
+   # Terminal 2: Start the frontend
+   npm run dev
+   ```
+
+6. **Open the application**
+   - Frontend: http://localhost:5173
+   - Backend API: http://localhost:3001
 
 ### Environment Variables
-Set the following in your Supabase project settings:
 
-```bash
-OPENAI_API_KEY=sk-...
-```
+| Variable | Description | Required |
+|----------|-------------|----------|
+| `OPENAI_API_KEY` | Your OpenAI API key for translation and summarization | ✅ Yes |
 
-### Deployment
-This application is deployed on Figma Make with Supabase integration.
-
-**Live URL:** [Your deployed URL here]
+### Production Deployment
+This application can also be deployed on cloud platforms with Supabase integration.
 
 ## 🔑 API Key Configuration
 
-**IMPORTANT:** Before using the application, configure your OpenAI API key:
-
-1. Navigate to your Supabase project dashboard
-2. Go to Settings → Edge Functions → Secrets
-3. Add `OPENAI_API_KEY` with your OpenAI API key
-4. Restart the edge functions
+**IMPORTANT:** Before using the application, configure your OpenAI API key in the `.env` files as described above.
 
 ## 📱 Usage
 
