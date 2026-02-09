@@ -84,9 +84,8 @@ const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12
 
 // Helper to sanitize errors for production
 function sanitizeError(error) {
-  if (process.env.NODE_ENV === 'production') {
-    return 'An internal error occurred';
-  }
+  // GENERIC ERROR: 'An internal error occurred'
+  // FOR DEBUGGING: Return full error
   return String(error);
 }
 
@@ -262,7 +261,14 @@ app.post('/make-server-b5f5c952/messages', upload.none(), async (req, res) => {
       // base64 to file
       const audioId = crypto.randomUUID();
       const fileName = `${conversationId}-${audioId}.webm`;
-      const filePath = path.join(__dirname, 'uploads', fileName);
+
+      // Ensure uploads directory exists
+      const uploadDir = path.join(__dirname, 'uploads');
+      if (!fs.existsSync(uploadDir)) {
+        fs.mkdirSync(uploadDir, { recursive: true });
+      }
+
+      const filePath = path.join(uploadDir, fileName);
 
       const buffer = Buffer.from(audioBlob, 'base64');
       fs.writeFileSync(filePath, buffer);
