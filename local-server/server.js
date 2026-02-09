@@ -83,7 +83,7 @@ function sanitizeError(error) {
   return String(error);
 }
 
-// --- Routes matching Deno/Supabase backend ---
+// --- API Routes ---
 
 // Health Check
 app.get('/make-server-b5f5c952/health', (req, res) => {
